@@ -1,0 +1,284 @@
+/* =================================================================== */
+/* 1. ESTILOS GERAIS (Corpo, Contêiner, Títulos)
+/* =================================================================== */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    /* Adicionamos a imagem de fundo que você queria */
+    background-image: url("../images/fundo_matuto.png"); /* O ../images/ sobe um nível */
+    background-size: cover;
+    background-repeat: repeat;
+    background-attachment: fixed;
+}
+
+/* Overlay para escurecer o fundo */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
+    z-index: -1;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.95); /* Fundo branco um pouco transparente */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* --- ESTILO DO CABEÇALHO (LOGO + TÍTULO) --- */
+.cabecalho {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.logo {
+    max-width: 80px;
+    height: auto;
+    margin-right: 20px;
+}
+
+h1 {
+    color: #2c3e50;
+    font-size: 2.5em;
+    margin: 0;
+}
+
+h2 {
+    color: #e67e22; /* Laranja */
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 5px;
+    margin-top: 40px;
+    font-size: 1.8em;
+}
+
+.aviso-vazio {
+    color: #777;
+    font-style: italic;
+    padding: 10px 0;
+}
+
+/* =================================================================== */
+/* 2. ESTILOS DOS PRODUTOS (Layout de Unidade/Fardo)
+/* =================================================================== */
+.item-produto-novo {
+    /* O contêiner para o produto inteiro */
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.item-nome-principal {
+    /* Ex: "Coca-Cola Lata 350ml" */
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #333;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.item-opcao {
+    /* O contêiner para a "Unidade" ou "Fardo" */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 15px; /* Leve recuo */
+    margin-bottom: 5px;
+}
+
+.item-opcao .info {
+    flex-grow: 1;
+}
+
+.item-tipo {
+    /* Ex: "Unidade" ou "Fardo (12 unidades)" */
+    font-size: 1em;
+    font-weight: 600;
+    color: #555;
+    display: block;
+}
+
+.item-preco-novo {
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 1.1em;
+    display: block;
+    margin-top: 2px;
+}
+
+.item-opcao .controles {
+    display: flex;
+    align-items: center;
+}
+
+.item-quantidade {
+    width: 50px;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+.btn-adicionar {
+    background-color: #e67e22; /* Laranja */
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-adicionar:hover {
+    background-color: #d35400;
+}
+
+/* =================================================================== */
+/* 3. ESTILOS DO MODAL/POP-UP E CARRINHO
+/* =================================================================== */
+
+/* Botão principal 'Revisar Pedido' */
+.botao-pedido {
+    width: 100%;
+    margin-top: 30px; /* Mais espaço acima */
+    padding: 15px;
+    background-color: #25D366; /* Cor do WhatsApp */
+    color: #fff;
+    text-align: center;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+}
+.botao-pedido:hover {
+    background-color: #218838;
+}
+
+
+/* O fundo escuro que cobre a tela */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+}
+
+.modal-overlay.visivel {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* A caixa branca do pop-up (o carrinho) */
+.modal-content {
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.btn-fechar {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+.btn-fechar:hover {
+    color: #000;
+}
+
+.modal-content h3 {
+    text-align: center;
+    margin-top: 0;
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+#itens-do-carrinho .item-carrinho {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9em;
+    padding: 5px 0;
+}
+#itens-do-carrinho .item-carrinho-nome { font-weight: bold; }
+#itens-do-carrinho .item-carrinho-preco { color: #555; }
+
+.total-carrinho {
+    border-top: 2px solid #eee;
+    padding-top: 10px;
+    margin-top: 10px;
+    font-size: 1.2em;
+    text-align: right;
+    color: #27ae60;
+}
+
+.forma-pagamento { margin-top: 15px; font-size: 0.9em; }
+.forma-pagamento h4 { margin: 0 0 5px 0; }
+.forma-pagamento label { display: block; margin-bottom: 5px; }
+
+/* =================================================================== */
+/* 4. ESTILOS DO FORMULÁRIO DE ENDEREÇO
+/* =================================================================== */
+.endereco-entrega {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+.endereco-entrega h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 1.1em;
+}
+
+.input-endereco {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    box-sizing: border-box; 
+}
+
+.endereco-linha-flex {
+    display: flex;
+    gap: 10px;
+}
+.input-rua {
+    flex-grow: 1;
+}
+.input-numero {
+    width: 80px;
+}

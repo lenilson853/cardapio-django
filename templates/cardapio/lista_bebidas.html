@@ -1,0 +1,102 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cardápio - Depósito de Bebidas</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="cabecalho">
+            <img src="{% static 'images/logo_matuto.png' %}" alt="Logo Depósito do Matuto" class="logo">
+            <h1>Nossas Bebidas</h1>
+        </div>
+
+        {% for categoria_nome, bebidas_da_categoria in categorias.items %}
+        
+            <h2>{{ categoria_nome }}</h2>
+            
+            {% if bebidas_da_categoria %}
+                
+                {% for bebida in bebidas_da_categoria %}
+                    
+                    <div class="item-produto-novo">
+                        
+                        <span class="item-nome-principal">{{ bebida.nome }}</span>
+
+                        {% if bebida.preco_unidade %}
+                        <div class="item-opcao">
+                            <div class="info">
+                                <span class="item-tipo">Unidade</span>
+                                <span class="item-preco-novo">R$ {{ bebida.preco_unidade }}</span>
+                            </div>
+                            <div class="controles">
+                                <input type="number" class="item-quantidade" value="1" min="1">
+                                <button class="btn-adicionar" 
+                                        data-nome="{{ bebida.nome }} (Unidade)" 
+                                        data-preco="{{ bebida.preco_unidade|stringformat:'f' }}">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %} {% if bebida.preco_fardo %}
+                        <div class="item-opcao">
+                            <div class="info">
+                                <span class="item-tipo">{{ bebida.descricao_fardo }}</span>
+                                <span class="item-preco-novo">R$ {{ bebida.preco_fardo }}</span>
+                            </div>
+                            <div class="controles">
+                                <input type="number" class="item-quantidade" value="1" min="1">
+                                <button class="btn-adicionar" 
+                                        data-nome="{{ bebida.nome }} ({{ bebida.descricao_fardo }})" 
+                                        data-preco="{{ bebida.preco_fardo|stringformat:'f' }}">
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %} </div> {% endfor %} {% else %}
+                <p class="aviso-vazio">Sem itens disponíveis nesta categoria no momento.</p>
+            {% endif %} {% endfor %} <button id="btn-revisar-pedido" class="botao-pedido">
+            Revisar Pedido (<span id="total-itens-carrinho">0</span> itens)
+        </button>
+
+    </div> <div id="modal-carrinho-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
+            <h3>Meu Pedido</h3>
+            <div id="itens-do-carrinho">
+                <p>Seu carrinho está vazio.</p>
+            </div>
+            <div class="total-carrinho">
+                <strong>Total: R$ <span id="total-preco">0.00</span></strong>
+            </div>
+            <div class="forma-pagamento">
+                <h4>Forma de Pagamento</h4>
+                <label><input type="radio" name="pagamento" value="Pix" checked> Pix</label>
+                <label><input type="radio" name="pagamento" value="Dinheiro"> Dinheiro</label>
+                <label><input type="radio" name="pagamento" value="Cartão"> Cartão</label>
+            </div>
+            <div class="endereco-entrega">
+                <h4>Endereço de Entrega</h4>
+                <div class="endereco-linha-flex">
+                    <input type="text" id="endereco-rua" placeholder="Rua / Avenida" class="input-endereco input-rua">
+                    <input type="text" id="endereco-numero" placeholder="Nº" class="input-endereco input-numero">
+                </div>
+                <input type="text" id="endereco-bairro" placeholder="Bairro" class="input-endereco">
+                <input type="text" id="endereco-referencia" placeholder="Ponto de Referência (Ex: Perto da padaria)" class="input-endereco">
+            </div>
+            <button id="btn-finalizar-pedido" class="botao-pedido">
+                Enviar Pedido (WhatsApp)
+            </button>
+        </div>
+    </div>
+
+    <script src="{% static 'js/carrinho.js' %}"></script>
+
+</body>
+</html>
