@@ -16,7 +16,8 @@ def lista_bebidas(request):
     
     # 4. Adiciona as categorias na ordem certa
     for cat in categorias_ordenadas:
-        bebidas_da_categoria = bebidas_disponiveis.filter(categoria=cat)
+        # Adicionamos o .order_by('nome') aqui para garantir a ordem
+        bebidas_da_categoria = bebidas_disponiveis.filter(categoria=cat).order_by('nome')
         
         # Só adiciona a categoria ao dicionário se ela tiver produtos disponíveis
         if bebidas_da_categoria.exists():
