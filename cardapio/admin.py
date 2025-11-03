@@ -3,24 +3,23 @@ from .models import Bebida
 
 @admin.register(Bebida)
 class BebidaAdmin(admin.ModelAdmin):
-    # ATUALIZADO: Mostra os dois preços
+    # ATUALIZADO: Removemos 'gelada' da lista
     list_display = (
         'nome', 
         'categoria', 
         'preco_unidade', 
         'preco_fardo', 
-        'disponivel', 
-        'gelada'
+        'disponivel'
     )
     
-    list_filter = ('categoria', 'disponivel', 'gelada')
+    # ATUALIZADO: Removemos 'gelada' dos filtros
+    list_filter = ('categoria', 'disponivel')
     
-    # ATUALIZADO: Permite editar os dois preços
+    # ATUALIZADO: Removemos 'gelada' da edição rápida
     list_editable = (
         'preco_unidade', 
         'preco_fardo', 
-        'disponivel', 
-        'gelada'
+        'disponivel'
     )
     
     search_fields = ('nome', 'categoria')
