@@ -282,3 +282,37 @@ h2 {
 .input-numero {
     width: 80px;
 }
+/* --- ESTILO DO NOVO BOTÃO 'REMOVER' --- */
+
+.item-carrinho {
+    /* Já temos display: flex, vamos apenas alinhar */
+    align-items: center;
+}
+
+.item-carrinho-nome {
+    /* Faz o nome ocupar o espaço que sobrar */
+    flex-grow: 1;
+}
+
+.item-carrinho-preco {
+    /* Adiciona um espaço antes do botão */
+    margin-right: 10px;
+}
+
+.btn-remover {
+    background: #e74c3c; /* Vermelho */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Faz o botão ficar redondo */
+    width: 20px;
+    height: 20px;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 20px; /* Centraliza o 'X' verticalmente */
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+}
+.btn-remover:hover {
+    background: #c0392b; /* Vermelho mais escuro */
+}

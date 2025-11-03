@@ -7,13 +7,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 2. "OS OLHOS" (Encontrar os elementos na página) ---
     const botoesAdicionar = document.querySelectorAll(".btn-adicionar");
     
-    // Elementos do Modal (pop-up)
     const modalOverlay = document.getElementById("modal-carrinho-overlay");
     const btnFecharModal = document.getElementById("btn-fechar-modal");
     const btnRevisarPedido = document.getElementById("btn-revisar-pedido");
     const btnFinalizar = document.getElementById("btn-finalizar-pedido");
 
-    // Elementos de texto do carrinho
     const carrinhoItensDiv = document.getElementById("itens-do-carrinho");
     const carrinhoTotalSpan = document.getElementById("total-preco");
     const totalItensSpan = document.getElementById("total-itens-carrinho");
@@ -22,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- 3. "OS OUVIDOS" (Ações do Usuário) ---
 
     // OUVIR cliques nos botões "Adicionar"
-    // (Esta é a parte que provavelmente estava faltando!)
     botoesAdicionar.forEach(botao => {
         botao.addEventListener("click", function() {
             const nome = botao.dataset.nome;
@@ -30,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const quantidadeInput = botao.previousElementSibling;
             const quantidade = parseInt(quantidadeInput.value);
 
+            // Usa o 'nome' como ID único no carrinho
             if (carrinho[nome]) {
                 carrinho[nome].quantidade += quantidade;
             } else {
@@ -38,8 +36,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     quantidade: quantidade
                 };
             }
-            quantidadeInput.value = 1; // Reseta o input
-            atualizarCarrinhoVisual(); // Atualiza o carrinho
+            quantidadeInput.value = 1; 
+            atualizarCarrinhoVisual(); 
         });
     });
 
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // OUVIR clique para FECHAR o modal (clicando no fundo)
     modalOverlay.addEventListener("click", function(event) {
-        // Só fecha se clicar no fundo (overlay) e NÃO no conteúdo (modal-content)
         if (event.target === modalOverlay) {
             modalOverlay.classList.remove("visivel");
         }
@@ -64,30 +61,25 @@ document.addEventListener("DOMContentLoaded", function() {
     // OUVIR clique para Finalizar o Pedido (WhatsApp)
     btnFinalizar.addEventListener("click", function() {
         
-        // 1. VERIFICAR SE O CARRINHO NÃO ESTÁ VAZIO
         const itens = Object.keys(carrinho);
         if (itens.length === 0) {
             alert("Seu carrinho está vazio!");
             return;
         }
 
-        // 2. PEGAR OS DADOS DO ENDEREÇO
         const rua = document.getElementById("endereco-rua").value;
         const numero = document.getElementById("endereco-numero").value;
         const bairro = document.getElementById("endereco-bairro").value;
         const referencia = document.getElementById("endereco-referencia").value;
 
-        // 3. VALIDAR O ENDEREÇO
         if (!rua || !numero || !bairro) {
             alert("Por favor, preencha seu endereço completo (Rua, Número e Bairro).");
-            return; // Para a execução e não envia o pedido
+            return; 
         }
 
-        // 4. FORMATAR A MENSAGEM
         let mensagem = "*--- NOVO PEDIDO - DEPÓSITO DO MATUTO ---*\n\n";
         let totalGeral = 0;
 
-        // Formata a lista de itens
         itens.forEach(nome => {
             const item = carrinho[nome];
             const subtotal = item.preco * item.quantidade;
@@ -98,36 +90,28 @@ document.addEventListener("DOMContentLoaded", function() {
         mensagem += "\n*-------------------------*\n";
         mensagem += `*Total: R$ ${totalGeral.toFixed(2)}*\n\n`;
 
-        // Pega a forma de pagamento
         const formaPagamento = document.querySelector('input[name="pagamento"]:checked').value;
         mensagem += `*Forma de Pagamento:* ${formaPagamento}\n\n`;
 
-        // 5. ADICIONAR O ENDEREÇO NA MENSAGEM
         mensagem += "*--- ENDEREÇO DE ENTREGA ---*\n";
         mensagem += `${rua}, Nº ${numero}\n`;
         mensagem += `Bairro: ${bairro}\n`;
         
-        // Só adiciona a referência se o cliente digitou uma
         if (referencia) {
             mensagem += `Referência: ${referencia}\n`;
         }
         
-        // 6. ENVIAR PARA O WHATSAPP
-        
         // !!! TROQUE PELO SEU NÚMERO DE WHATSAPP !!!
-        const seuNumero = "558191251583"; // Formato 55 + DDD + Numero
+        const seuNumero = "5581912345678"; // Formato 55 + DDD + Numero
 
-        // Codifica a mensagem completa para uma URL
         const mensagemCodificada = encodeURIComponent(mensagem);
         const linkWhatsApp = `https://api.whatsapp.com/send?phone=${seuNumero}&text=${mensagemCodificada}`;
         
-        // Abre o link em uma nova aba
         window.open(linkWhatsApp, '_blank');
     });
 
 
     // --- 4. FUNÇÃO AUXILIAR (Atualizar o visual do carrinho) ---
-    // (Esta é a outra parte que provavelmente estava faltando!)
     function atualizarCarrinhoVisual() {
         carrinhoItensDiv.innerHTML = "";
         let totalGeral = 0;
@@ -142,26 +126,51 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
 
-        // Cria o HTML para cada item
         itens.forEach(nome => {
             const item = carrinho[nome];
             const subtotal = item.preco * item.quantidade;
             totalGeral += subtotal;
             totalItens += item.quantidade;
 
+            // =============================================
+            // 👇 ADIÇÃO DO BOTÃO REMOVER AQUI 👇
+            // =============================================
             const itemHtml = `
                 <div class="item-carrinho">
                     <span class="item-carrinho-nome">${item.quantidade}x ${nome}</span>
                     <span class="item-carrinho-preco">R$ ${subtotal.toFixed(2)}</span>
+                    <button class="btn-remover" data-nome="${nome}">&times;</button>
                 </div>
             `;
             carrinhoItensDiv.innerHTML += itemHtml;
         });
 
-        // Atualiza o total (no pop-up)
         carrinhoTotalSpan.textContent = totalGeral.toFixed(2);
-        // Atualiza o contador de itens (no botão principal)
         totalItensSpan.textContent = totalItens;
+        
+        // ATIVA OS NOVOS BOTÕES 'REMOVER' QUE ACABAMOS DE CRIAR
+        ativarBotoesRemover();
+    }
+    
+    // =============================================
+    // 👇 NOVA FUNÇÃO PARA REMOVER ITENS 👇
+    // =============================================
+    function ativarBotoesRemover() {
+        const botoesRemover = document.querySelectorAll('.btn-remover');
+        botoesRemover.forEach(botao => {
+            botao.addEventListener('click', function() {
+                // Pega o nome do item direto do atributo 'data-nome'
+                const nomeDoItem = botao.dataset.nome;
+                
+                // Remove o item do "cérebro" (carrinho)
+                if (carrinho[nomeDoItem]) {
+                    delete carrinho[nomeDoItem];
+                }
+                
+                // Atualiza o visual
+                atualizarCarrinhoVisual();
+            });
+        });
     }
 
 });

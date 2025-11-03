@@ -22,7 +22,6 @@
             <h2>{{ categoria_nome }}</h2>
             
             {% if bebidas_da_categoria %}
-                
                 {% for bebida in bebidas_da_categoria %}
                     
                     <div class="item-produto-novo">
@@ -44,7 +43,9 @@
                                 </button>
                             </div>
                         </div>
-                        {% endif %} {% if bebida.preco_fardo %}
+                        {% endif %} 
+                        
+                        {% if bebida.preco_fardo %}
                         <div class="item-opcao">
                             <div class="info">
                                 <span class="item-tipo">{{ bebida.descricao_fardo }}</span>
@@ -59,9 +60,16 @@
                                 </button>
                             </div>
                         </div>
-                        {% endif %} </div> {% endfor %} {% else %}
+                        {% endif %} 
+                    
+                    </div> {% endfor %}
+            {% else %}
                 <p class="aviso-vazio">Sem itens disponíveis nesta categoria no momento.</p>
-            {% endif %} {% endfor %} <button id="btn-revisar-pedido" class="botao-pedido">
+            {% endif %} 
+
+        {% endfor %} 
+        
+        <button id="btn-revisar-pedido" class="botao-pedido">
             Revisar Pedido (<span id="total-itens-carrinho">0</span> itens)
         </button>
 
@@ -92,7 +100,7 @@
             </div>
             <button id="btn-finalizar-pedido" class="botao-pedido">
                 Enviar Pedido (WhatsApp)
-            </button>
+            </endbutton>
         </div>
     </div>
 
