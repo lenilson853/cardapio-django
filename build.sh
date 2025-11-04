@@ -12,7 +12,3 @@ python manage.py collectstatic --no-input
 
 # 3. Aplica as migrações no banco de dados (cria as tabelas)
 python manage.py migrate
-
-# 4. Cria seu usuário "dono" (admin) automaticamente!
-# (Ele vai ler as senhas que vamos configurar no Render)
-python manage.py createsuperuser --noinput
